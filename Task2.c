@@ -89,8 +89,33 @@ struct Inventar* filtrareProduseDinInv(struct Inventar* vector, int dim, int* di
 			inventar[*dimNoua] = vector[i];
 			(*dimNoua)++;
 		}
+		
 	}
 	return inventar;
+}
+
+//functie care muta intr-un nou vector obiectele cu pretul mediu > 20
+struct Inventar* mutaPreturiMari(struct Inventar* vector, int* dim, int* dimNoua)
+{
+	struct Inventar* inventar = malloc(sizeof(struct Inventar) * (*dim));
+	*dimNoua = 0;
+	for (int i = 0; i < *dim; i++)
+	{
+		float suma = 0;
+		for (int j = 0; j < vector[i].nrProduse; i++)
+		{
+			suma += vector[i].preturi[j];
+		}
+		
+		float medie = suma / vector[i].nrProduse;
+
+		if (medie > 20)
+		{
+			inventar[*dimNoua] = vector[i];
+			(*dimNoua)++;
+		}
+	}
+
 }
 int main()
 {
@@ -127,5 +152,16 @@ int main()
 	struct Inventar* vectorFiltrat = filtrareProduseDinInv(vector, dim, &dimNoua);
 	printf("\nVector cu produse > 5: \n");
 	afisareVectorInventar(vectorFiltrat, dimNoua);
+
+
+	int dimMutare;
+	struct Inventar* vectorInvMutate = mutaPreturiMari(vector, &dim, &dimMutare);
+	printf("\nVector cu produse ramase dupa mutare: \n");
+	afisareVectorInventar(vector, dim);
+
+	printf("\nVector cu produse mutate (medie pret > 20): \n");
+	afisareVectorInventar(vector, dimMutare);
+
+
 	return 0;
 }
