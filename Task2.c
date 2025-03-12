@@ -117,6 +117,24 @@ struct Inventar* mutaPreturiMari(struct Inventar* vector, int* dim, int* dimNoua
 	}
 
 }
+
+//functie care concateneaza doi vectori
+struct Inventar* concateneazaVectori(struct Inventar* v1, int dim1, struct Inventar* v2, int dim2, int* dimNoua)
+{
+	*dimNoua = dim1 + dim2;
+	struct Inventar* inventar = malloc(sizeof(struct Inventar) * (*dimNoua));
+
+	for (int i = 0; i < dim1; i++)
+	{
+		inventar[i] = v1[i];
+	}
+	for (int i = 0; i < dim2; i++)
+	{
+		inventar[i] = v2[i];
+	}
+
+	return inventar;
+}
 int main()
 {
 	struct Inventar inv = citireInventar();
@@ -162,6 +180,11 @@ int main()
 	printf("\nVector cu produse mutate (medie pret > 20): \n");
 	afisareVectorInventar(vector, dimMutare);
 
+
+	int dimConcat;
+	struct Inventar* vectorConcatenat = concateneazaVectori(vector, dim, vectorInvMutate, dimMutare, &dimConcat);
+	printf("\nVector concatenat: \n");
+	afisareVectorInventar(vectorConcatenat, dimConcat);
 
 	return 0;
 }
