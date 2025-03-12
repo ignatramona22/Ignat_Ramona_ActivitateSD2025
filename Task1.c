@@ -61,6 +61,13 @@ float calculMediePreturi(struct Inventar inv)
 	return suma / inv.nrProduse;
 }
 
+void modificareNumarProduse(struct Inventar* inv, int _nrProduse)
+{
+	inv->nrProduse = _nrProduse;
+	inv->preturi = realloc(inv->preturi, sizeof(float) * _nrProduse);
+	printf("Noul numar de produse este: %d", inv->nrProduse);
+}
+
 
 int main()
 {
@@ -68,5 +75,13 @@ int main()
 	afisareInventar(inv);
 
 	printf("\nMedia preturilor este: %.2f", calculMediePreturi(inv));
+
+	int nrNou;
+	printf("\nIntroduceti noul numar de produse: ");
+	scanf("%d", &nrNou);
+	modificareNumarProduse(&inv, nrNou);
+
+	afisareInventar(inv);
+
 	return 0;
 }
