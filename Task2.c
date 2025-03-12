@@ -69,7 +69,13 @@ void afisareInventar(struct Inventar inv)
 	printf("\n");
 }
 
-
+void afisareVectorInventar(struct Inventar* vector, int dim)
+{
+	for (int i = 0; i < dim; i++)
+	{
+		afisareInventar(vector[i]);
+	}
+}
 int main()
 {
 	struct Inventar inv = citireInventar();
@@ -85,6 +91,7 @@ int main()
 	afisareInventar(inv);
 
 	//vector alocat dinamic de cel putin 5 obiecte 
+
 	int dim = 5;
 	struct Inventar* vector;
 	vector = malloc(sizeof(struct Inventar) * dim);
