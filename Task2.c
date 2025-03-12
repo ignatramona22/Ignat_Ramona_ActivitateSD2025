@@ -76,6 +76,22 @@ void afisareVectorInventar(struct Inventar* vector, int dim)
 		afisareInventar(vector[i]);
 	}
 }
+
+//Functie care creeaza un nou vector cu obiectele ce au mai mult de 5 produse
+struct Inventar* filtrareProduseDinInv(struct Inventar* vector, int dim, int* dimNoua)
+{
+	struct Inventar* inventar = malloc(sizeof(struct Inventar) * dim);
+	*dimNoua = 0;
+	for (int i = 0; i < dim; i++)
+	{
+		if (vector[i].nrProduse > 5)
+		{
+			inventar[*dimNoua] = vector[i];
+			(*dimNoua)++;
+		}
+	}
+	return inventar;
+}
 int main()
 {
 	struct Inventar inv = citireInventar();
@@ -103,5 +119,13 @@ int main()
 		printf("\n");
 	}
 
+	printf("\nVectorul initial: \n");
+	afisareVectorInventar(vector, dim);
+
+
+	int dimNoua;
+	struct Inventar* vectorFiltrat = filtrareProduseDinInv(vector, dim, &dimNoua);
+	printf("\nVector cu produse > 5: \n");
+	afisareVectorInventar(vectorFiltrat, dimNoua);
 	return 0;
 }
