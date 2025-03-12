@@ -37,19 +37,6 @@ struct Inventar citireInventar()
 	return inv;
 }
 
-void afisareInventar(struct Inventar inv)
-{
-	printf("\nInventar:\n");
-	printf("Cod: %d\n", inv.cod);
-	printf("Denumire produs: %s\n", inv.denumireProdus);
-	printf("Numar produse: %d\n", inv.nrProduse);
-	printf("Preturi:");
-	for (int i = 0; i < inv.nrProduse; i++)
-	{
-		printf("%.2f ", inv.preturi[i]);
-	}
-	printf("\n");
-}
 
 float calculMediePreturi(struct Inventar inv)
 {
@@ -68,6 +55,20 @@ void modificareNumarProduse(struct Inventar* inv, int _nrProduse)
 	printf("Noul numar de produse este: %d", inv->nrProduse);
 }
 
+void afisareInventar(struct Inventar inv)
+{
+	printf("\nInventar:\n");
+	printf("Cod: %d\n", inv.cod);
+	printf("Denumire produs: %s\n", inv.denumireProdus);
+	printf("Numar produse: %d\n", inv.nrProduse);
+	printf("Preturi:");
+	for (int i = 0; i < inv.nrProduse; i++)
+	{
+		printf("%.2f ", inv.preturi[i]);
+	}
+	printf("\n");
+}
+
 
 int main()
 {
@@ -78,7 +79,7 @@ int main()
 
 	int nrNou;
 	printf("\nIntroduceti noul numar de produse: ");
-	scanf("%d", &nrNou);
+	scanf_s("%d", &nrNou);
 	modificareNumarProduse(&inv, nrNou);
 
 	afisareInventar(inv);
