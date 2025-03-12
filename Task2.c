@@ -135,6 +135,18 @@ struct Inventar* concateneazaVectori(struct Inventar* v1, int dim1, struct Inven
 
 	return inventar;
 }
+
+void dezalocare(struct Inventar** vector, int* nrElemente) {
+	for (int i = 0; i < *nrElemente; i++)
+	{
+		free((*vector)[i].denumireProdus);
+		free((*vector)[i].preturi);
+	}
+
+	free(*vector);
+	*vector = NULL;
+	*nrElemente = 0;
+}
 int main()
 {
 	struct Inventar inv = citireInventar();
@@ -185,6 +197,12 @@ int main()
 	struct Inventar* vectorConcatenat = concateneazaVectori(vector, dim, vectorInvMutate, dimMutare, &dimConcat);
 	printf("\nVector concatenat: \n");
 	afisareVectorInventar(vectorConcatenat, dimConcat);
+
+	// Eliberare memorie
+	dezalocare(&vector, &dim);
+	dezalocare(&vectorFiltrat, &dimNoua);
+	dezalocare(&vectorInvMutate, &dimMutare);
+	dezalocare(&vectorConcatenat, &dimConcat);
 
 	return 0;
 }
