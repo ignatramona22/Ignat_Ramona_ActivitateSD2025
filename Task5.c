@@ -312,6 +312,39 @@ Masina* salveazaMasiniPretMare(Nod* lista, int* dimensiune) {
 }
 
 
+void interschimbaElemente(Nod** cap, int pos1, int pos2) {
+	if (pos1 == pos2) return;
+
+	Nod* prev1 = NULL, * prev2 = NULL, * nod1 = *cap, * nod2 = *cap;
+	int index = 0;
+
+	while (nod1 && index < pos1) {
+		prev1 = nod1;
+		nod1 = nod1->next;
+		index++;
+	}
+
+	index = 0;
+	while (nod2 && index < pos2) {
+		prev2 = nod2;
+		nod2 = nod2->next;
+		index++;
+	}
+
+	if (!nod1 || !nod2) return;
+
+	if (prev1) prev1->next = nod2;
+	else *cap = nod2;
+
+	if (prev2) prev2->next = nod1;
+	else *cap = nod1;
+
+	Nod* temp = nod2->next;
+	nod2->next = nod1->next;
+	nod1->next = temp;
+}
+
+
 int main() {
 	Nod* lista = NULL;
 	lista = citireListaMasiniDinFisier("masini.txt");
@@ -339,6 +372,11 @@ int main() {
 		free(masiniScumpe[i].numeSofer);
 	}
 	free(masiniScumpe);
+
+
+	printf("\n=== Inter-schimbare elemente pozitiile 0 si 1 ===\n");
+	interschimbaElemente(&lista, 0, 1);
+	afisareListaMasini(lista);
 
 	dezalocareListaMasini(&lista);
 	return 0;
