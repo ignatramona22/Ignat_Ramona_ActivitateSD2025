@@ -99,7 +99,7 @@ Nod* citireListaMasiniDinFisier(const char* numeFisier) {
 	Nod* lista = NULL;
 	while (!feof(f))
 	{
-		adaugaLaInceputInLista(&lista, citireMasinaDinFisier(f)); //daca am fi facut deep copy ar fi trebuit sa stergem aici 
+		adaugaMasinaInLista(&lista, citireMasinaDinFisier(f)); //daca am fi facut deep copy ar fi trebuit sa stergem aici 
 	}
 	fclose(f);
 	return lista;
@@ -178,7 +178,7 @@ void stergeMasiniDinSeria(Nod** cap,  const char* serieCautata) {
 
 }
 
-float calculeazaPretulMasinilorUnuiSofer(Nod* lista,  const char* numeSofer) {
+float calculeazaPretulMasinilorUnuiSofer(Nod* lista, const char* numeSofer) {
 	//calculeaza pretul tuturor masinilor unui sofer.
 	if (!lista) return 0;
 
@@ -193,9 +193,43 @@ float calculeazaPretulMasinilorUnuiSofer(Nod* lista,  const char* numeSofer) {
 	}
 
 	return suma;
+}
 
+void stergeNodPePozitie(Nod** cap, int pozitie) {
+	if (*cap == NULL || pozitie < 0) return NULL;
 
-	
+	//Caz 1 - stergem primul nod
+	Nod* temp = *cap;
+	if (pozitie == 0) {
+		*cap = temp->next;
+		free(temp->info.model);
+		free(temp->info.numeSofer);
+		free(temp);
+		return;
+	}
+
+	//Caz 2 - stergem un nod intermediar sau final
+	Nod* p = *cap;
+	int index = 0;
+	while (p!=NULL)
+	{
+		while (p->next && index + 1 != pozitie) {
+			p = p->next;
+			index++;
+		}
+		if (p->next != NULL) {
+			Nod* temp = p->next;
+			p->next = temp->next;
+			free(temp->info.model);
+			free(temp->info.numeSofer);
+			free(temp);
+			return;
+		}
+		else
+		{
+			p = p->next;
+		}
+	}
 }
 
 int main() {
@@ -203,20 +237,8 @@ int main() {
 	lista = citireListaMasiniDinFisier("masini.txt");
 	afisareListaMasini(lista);
 
-	printf("\n== PRET MEDIU ==\n");
-	printf("%.2f", calculeazaPretMediu(lista));
-
-	printf("\n\nPRETUL MASINILOR UNUI SOFER\n");
-	const char* numeSofer = "Ionescu";
-	printf("%.2f", calculeazaPretulMasinilorUnuiSofer(lista,numeSofer));
-
-
-	printf("\nSTERGERE SERIA A si B\n");
-	char serieCautataA = 'A';
-	char serieCautataB = 'B';
-	stergeMasiniDinSeria(&lista, serieCautataA);
-	stergeMasiniDinSeria(&lista, serieCautataB);
-
+	printf("\n=== Stergere nod de pe pozitia 1 ===\n");
+	stergeNodPePozitie(&lista, 1);
 	afisareListaMasini(lista);
 
 	dezalocareListaMasini(&lista);
