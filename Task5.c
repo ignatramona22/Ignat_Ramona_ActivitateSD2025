@@ -273,6 +273,44 @@ void inserareSortataDupaPret(Nod** cap, Masina masinaNoua) {
 	temp->next = nou;
 }
 
+Masina* salveazaMasiniPretMare(Nod* lista, int* dimensiune) {
+	*dimensiune = 0;
+	Nod* temp = lista;
+
+	while (temp) {
+		if (temp->info.pret > 20000.0) {
+			(*dimensiune)++;
+		}
+		temp = temp->next;
+	}
+
+	if (*dimensiune == 0) return NULL;
+
+	Masina* vector = (Masina*)malloc((*dimensiune) * sizeof(Masina));
+	temp = lista;
+	int index = 0;
+
+	while (temp) {
+		if (temp->info.pret > 20000.0) {
+			vector[index].id = temp->info.id;
+			vector[index].nrUsi = temp->info.nrUsi;
+			vector[index].pret = temp->info.pret;
+			vector[index].serie = temp->info.serie;
+
+			vector[index].model = (char*)malloc(strlen(temp->info.model) + 1);
+			strcpy(vector[index].model, temp->info.model);
+
+			vector[index].numeSofer = (char*)malloc(strlen(temp->info.numeSofer) + 1);
+			strcpy(vector[index].numeSofer, temp->info.numeSofer);
+
+			index++;
+		}
+		temp = temp->next;
+	}
+
+	return vector;
+}
+
 
 int main() {
 	Nod* lista = NULL;
@@ -291,6 +329,16 @@ int main() {
 	inserareSortataDupaPret(&lista, m2);
 	inserareSortataDupaPret(&lista, m3);
 	afisareListaMasini(lista);
+
+	printf("\n=== Salvare in vector (masini cu pret > 20000) ===\n");
+	int dim;
+	Masina* masiniScumpe = salveazaMasiniPretMare(lista, &dim);
+	for (int i = 0; i < dim; i++) {
+		afisareMasina(masiniScumpe[i]);
+		free(masiniScumpe[i].model);
+		free(masiniScumpe[i].numeSofer);
+	}
+	free(masiniScumpe);
 
 	dezalocareListaMasini(&lista);
 	return 0;
