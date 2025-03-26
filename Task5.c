@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+
 //trebuie sa folositi fisierul masini.txt
 //sau va creati un alt fisier cu alte date
 
@@ -195,6 +197,7 @@ float calculeazaPretulMasinilorUnuiSofer(Nod* lista, const char* numeSofer) {
 	return suma;
 }
 
+
 void stergeNodPePozitie(Nod** cap, int pozitie) {
 	if (*cap == NULL || pozitie < 0) return NULL;
 
@@ -232,6 +235,45 @@ void stergeNodPePozitie(Nod** cap, int pozitie) {
 	}
 }
 
+void inserareSortataDupaPret(Nod** cap, Masina masinaNoua) {
+	Nod* nou = (Nod*)malloc(sizeof(Nod));
+	if (!nou) {
+		printf("Eroare la alocarea memoriei!\n");
+		return;
+	}
+
+	// Deep copy
+	nou->info.id = masinaNoua.id;
+	nou->info.nrUsi = masinaNoua.nrUsi;
+	nou->info.pret = masinaNoua.pret;
+	nou->info.serie = masinaNoua.serie;
+
+	nou->info.model = malloc(strlen(masinaNoua.model) + 1);
+	if (nou->info.model == NULL) exit(1);
+	strcpy(nou->info.model, masinaNoua.model);
+
+	nou->info.numeSofer = malloc(strlen(masinaNoua.numeSofer) + 1);
+	if (nou->info.numeSofer == NULL) exit(1);
+	strcpy(nou->info.numeSofer, masinaNoua.numeSofer);
+
+	nou->next = NULL;
+
+	if (*cap == NULL || (*cap)->info.pret >= masinaNoua.pret) {
+		nou->next = *cap;
+		*cap = nou;
+		return;
+	}
+
+	Nod* temp = *cap;
+	while (temp->next != NULL && temp->next->info.pret < masinaNoua.pret) {
+		temp = temp->next;
+	}
+
+	nou->next = temp->next;
+	temp->next = nou;
+}
+
+
 int main() {
 	Nod* lista = NULL;
 	lista = citireListaMasiniDinFisier("masini.txt");
@@ -239,6 +281,15 @@ int main() {
 
 	printf("\n=== Stergere nod de pe pozitia 1 ===\n");
 	stergeNodPePozitie(&lista, 1);
+	afisareListaMasini(lista);
+
+	printf("\n=== Lista dupa inserare sortata ===\n");
+	Masina m1 = { 11, 4, 25000, "BMW", "Andrei", 'A' };
+	Masina m2 = { 12, 2, 15000,"Ford","Maria", 'B' }; 
+	Masina m3 = { 13, 5, 30000,  "Audi", "Ion", 'C' };
+	inserareSortataDupaPret(&lista, m1);
+	inserareSortataDupaPret(&lista, m2);
+	inserareSortataDupaPret(&lista, m3);
 	afisareListaMasini(lista);
 
 	dezalocareListaMasini(&lista);
