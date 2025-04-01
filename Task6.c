@@ -220,6 +220,63 @@ void stergeNodPePozitie(ListaDubla* lista, int pozitie) {
 	free(temp);
 	lista->nrNoduri--;
 }
+void adaugaMasinaSortata(ListaDubla* lista, Masina masinaNoua) {
+	Nod* nou = (Nod*)malloc(sizeof(Nod));
+
+	// Ini?ializare nod nou
+	nou->info.id = masinaNoua.id;
+	nou->info.nrUsi = masinaNoua.nrUsi;
+	nou->info.pret = masinaNoua.pret;
+	nou->info.serie = masinaNoua.serie;
+	nou->info.model = malloc(strlen(masinaNoua.model) + 1);
+	if (nou->info.model == NULL) exit(1);
+	strcpy(nou->info.model, masinaNoua.model);
+
+	nou->info.numeSofer = malloc(strlen(masinaNoua.numeSofer) + 1);
+	if (nou->info.numeSofer == NULL) exit(1);
+	strcpy(nou->info.numeSofer, masinaNoua.numeSofer);
+
+	nou->next = NULL;
+	nou->prev = NULL;
+
+	// daca lista este goala
+	if (lista->cap == NULL) {
+		lista->cap = lista->coada = nou;
+	}
+	else {
+		Nod* temp = lista->cap;
+
+		// inserare la inceputul listei 
+		if (temp->info.pret >= masinaNoua.pret) {
+			nou->next = lista->cap;
+			lista->cap->prev = nou;
+			lista->cap = nou;
+		}
+		else {
+			// mijlocul sau finalul listei
+			while (temp->next && temp->next->info.pret < masinaNoua.pret) {
+				temp = temp->next;
+			}
+
+			// la final
+			if (temp->next == NULL) {
+				lista->coada->next = nou;
+				nou->prev = lista->coada;
+				lista->coada = nou;
+			}
+			// la mijloc
+			else {
+				nou->next = temp->next;
+				nou->prev = temp;
+				temp->next->prev = nou;
+				temp->next = nou;
+			}
+		}
+	}
+
+	lista->nrNoduri++;
+}
+
 
 int main() {
 
@@ -236,6 +293,12 @@ int main() {
 	printf("\nLista dupa stergerea masinii de pe pozitia 1\n");
 	stergeNodPePozitie(&lista, 1);
 	afisareListaMasini(lista);
+
+	printf("\nInserare masina in lista sortata crescator dupa pret\n");
+	Masina m = { 11, 4, 13000.3, "Break", "Ramona", 'Z'};
+	adaugaMasinaSortata(&lista, m);
+	afisareListaMasini(lista);
+
 	dezalocareLDMasini(&lista);
 
 	return 0;
