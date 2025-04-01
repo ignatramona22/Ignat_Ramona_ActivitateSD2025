@@ -64,6 +64,7 @@ void afisareMasina(Masina masina) {
 	printf("Serie: %c\n\n", masina.serie);
 }
 
+
 void afisareListaMasini(ListaDubla lista) {
 	Nod* temp = lista.cap;
 	while (temp)
@@ -298,6 +299,12 @@ int main() {
 	Masina m = { 11, 4, 13000.3, "Break", "Ramona", 'Z'};
 	adaugaMasinaSortata(&lista, m);
 	afisareListaMasini(lista);
+
+	printf("\nParcurgerea listei sortate crescator\n");
+	afisareListaMasini(lista);
+
+	printf("\nParcurgerea listei sortate descrescator\n");
+	afisareListaMasiniDeLaFinal(lista);
 
 	dezalocareLDMasini(&lista);
 
