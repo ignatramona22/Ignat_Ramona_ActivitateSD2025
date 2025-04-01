@@ -279,6 +279,43 @@ void adaugaMasinaSortata(ListaDubla* lista, Masina masinaNoua) {
 }
 
 
+struct NodLS
+{
+	Masina info;
+	struct NodLS* next;
+};
+
+typedef struct NodLS NodLS;
+
+void adaugaMasinaInListaSimpla(NodLS** cap,  Masina masinaNoua) {
+	NodLS* nou = (NodLS*)malloc(sizeof(NodLS));
+	nou->info.id = masinaNoua.id;
+	nou->info.nrUsi = masinaNoua.nrUsi;
+	nou->info.pret = masinaNoua.pret;
+	nou->info.serie = masinaNoua.serie;
+	nou->info.model = malloc(strlen(masinaNoua.model) + 1);
+	if (nou->info.model == NULL) exit(1);
+	strcpy(nou->info.model, masinaNoua.model);
+
+	nou->info.numeSofer = malloc(strlen(masinaNoua.numeSofer) + 1);
+	if (nou->info.numeSofer == NULL) exit(1);
+	strcpy(nou->info.numeSofer, masinaNoua.numeSofer);
+	nou->next = *cap;
+	*cap = nou;
+}
+
+void salveazaMasiniCareIndeplinescConditia(ListaDubla lista, NodLS** listaSimpla, float pretMinim) {
+	int count = 0;
+	Nod* temp = lista.cap;
+	while (temp) {
+		if (temp->info.pret >= pretMinim) {
+			adaugaMasinaInListaSimpla(listaSimpla, temp->info);
+			count++;
+		}
+		temp = temp->next;
+	}
+}
+
 int main() {
 
 	ListaDubla lista;
@@ -305,6 +342,22 @@ int main() {
 
 	printf("\nParcurgerea listei sortate descrescator\n");
 	afisareListaMasiniDeLaFinal(lista);
+
+
+	printf("\nSalvare in Lista Simpla");
+	NodLS* listaSimpla = NULL;
+	float pretMinim = 6000;
+	salveazaMasiniCareIndeplinescConditia(lista, &listaSimpla, pretMinim);
+	NodLS* temp = listaSimpla;
+	while (temp) {
+		printf("Id: %d\n", temp->info.id);
+		printf("Nr. usi: %d\n", temp->info.nrUsi);
+		printf("Pret: %.2f\n", temp->info.pret);
+		printf("Model: %s\n", temp->info.model);
+		printf("Nume sofer: %s\n", temp->info.numeSofer);
+		printf("Serie: %c\n\n", temp->info.serie);
+		temp = temp->next;
+	}
 
 	dezalocareLDMasini(&lista);
 
