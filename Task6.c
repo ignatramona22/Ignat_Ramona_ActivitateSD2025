@@ -278,6 +278,29 @@ void adaugaMasinaSortata(ListaDubla* lista, Masina masinaNoua) {
 	lista->nrNoduri++;
 }
 
+void interschimbaElementePePozitii(ListaDubla* lista, int pozitie1, int pozitie2) {
+	if (pozitie1 < 0 || pozitie1 >= lista->nrNoduri || pozitie2 < 0 || pozitie2 >= lista->nrNoduri) {
+		printf("Pozitii invalide!\n");
+		return;
+	}
+
+	Nod* nod1 = lista->cap;
+	Nod* nod2 = lista->cap;
+
+	for (int i = 0; i < pozitie1; i++) {
+		nod1 = nod1->next;
+	}
+
+	for (int i = 0; i < pozitie2; i++) {
+		nod2 = nod2->next;
+	}
+
+	Masina temp = nod1->info;
+	nod1->info = nod2->info;
+	nod2->info = temp;
+}
+
+
 
 struct NodLS
 {
@@ -343,6 +366,9 @@ int main() {
 	printf("\nParcurgerea listei sortate descrescator\n");
 	afisareListaMasiniDeLaFinal(lista);
 
+	printf("\nInterschimare masini de pe pozitiile 3 si 4\n");
+	interschimbaElementePePozitii(&lista, 3, 4);
+	afisareListaMasini(lista);
 
 	printf("\nSalvare in Lista Simpla");
 	NodLS* listaSimpla = NULL;
