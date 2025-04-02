@@ -30,6 +30,21 @@
     <ClCompile Include="Task3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Seminar4.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar5.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Task5.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Task6.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar6.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="masini.txt">

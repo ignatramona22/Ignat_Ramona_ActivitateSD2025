@@ -129,9 +129,14 @@
   <ItemGroup>
     <ClCompile Include="Seminar2.c" />
     <ClCompile Include="Seminar3.c" />
+    <ClCompile Include="Seminar4.c" />
+    <ClCompile Include="Seminar5.c" />
+    <ClCompile Include="Seminar6.c" />
     <ClCompile Include="Task1.c" />
     <ClCompile Include="Task2.c" />
     <ClCompile Include="Task3.c" />
+    <ClCompile Include="Task5.c" />
+    <ClCompile Include="Task6.c" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="inventare.txt" />
