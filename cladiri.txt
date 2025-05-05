@@ -1,0 +1,10 @@
+1,1886,Palatul Cotroceni
+2,1977,Bloc Titan
+3,1935,Casa Vernescu
+4,2005,Turn BRD Sky Tower
+5,1895,Ateneul Roman
+6,1980,Bloc Militari
+7,2014,Globalworth Tower
+8,1940,Palatul Victoria
+9,2020,One Tower
+10,1900,Teatrul National Bucuresti
