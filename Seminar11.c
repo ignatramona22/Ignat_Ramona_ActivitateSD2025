@@ -17,6 +17,11 @@ struct StructuraMasina {
 };
 typedef struct StructuraMasina Masina;
 
+struct Nod {
+	Masina info;
+	struct Nod* next;
+};
+typedef struct Nod Nod;
 Masina citireMasinaDinFisier(FILE* file) {
 	char buffer[100];
 	char sep[3] = ",\n";
@@ -51,22 +56,47 @@ void afisareMasina(Masina masina) {
 //STACK
 //Alegeti prin ce veti reprezenta stiva si creati structura necesara acestei stive
 //putem reprezenta o stiva prin LSI, LDI sau vector
-void pushStack(/*stiva*/ Masina masina) {
+void pushStack(Nod** stiva,  Masina masina) {
+	if ((*stiva) != NULL) {
+		Nod* nou = (Nod*)malloc(sizeof(Nod));
+		nou->info = masina;
+		nou->next = *stiva;
+		(*stiva) = nou;
+	}
+}
+
+Masina popStack(Nod** stiva) {
+	if ((*stiva) != NULL) {
+		Masina nou = (*stiva)->info;
+		Nod* prev = (*stiva);
+		(*stiva) = (*stiva)->next;
+		free(prev);
+		return nou;
+	}
+	else
+	{
+		Masina m;
+		m.id = -1;
+		return m;
+	}
+	
 
 }
 
-Masina popStack(/*stiva*/) {
-
+unsigned char emptyStack(Nod* stiva) {
+	return stiva == NULL;
 }
 
-int emptyStack(/*stiva*/) {
-
-}
-
-void* citireStackMasiniDinFisier(const char* numeFisier) {
-	//functia primeste numele fisierului, il deschide si citeste toate masinile din fisier
-	//prin apelul repetat al functiei citireMasinaDinFisier()
-	//ATENTIE - la final inchidem fisierul/stream-ul
+Nod* citireStackMasiniDinFisier(const char* numeFisier) {
+	Nod* stiva = (Nod*)malloc(sizeof(Nod));
+	FILE* f = fopen(numeFisier, "r");
+	while (!feof(f))
+	{
+		Masina masina = citireMasinaDinFisier(f);
+		pushStack(&stiva, masina);
+	}
+	fclose(f);
+	return stiva;
 }
 
 void dezalocareStivaDeMasini(/*stiva*/) {
@@ -105,7 +135,16 @@ Masina getMasinaByID(/*stiva sau coada de masini*/int id);
 float calculeazaPretTotal(/*stiva sau coada de masini*/);
 
 int main() {
+	Nod* stiva = citireStackMasiniDinFisier("masini.txt");
+	Masina m = popStack(&stiva);
+	afisareMasina(m);
+	free(m.numeSofer);
+	free(m.model);
 
+	Masina m1 = popStack(&stiva);
+	afisareMasina(m1);
+	free(m1.numeSofer);
+	free(m1.model);
 
 	return 0;
 }
