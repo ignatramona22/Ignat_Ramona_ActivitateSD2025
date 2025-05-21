@@ -45,12 +45,45 @@
     <ClCompile Include="Seminar6.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Task9.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Task8.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar7.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar9.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar10.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar11.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar12.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="masini.txt">
       <Filter>Source Files</Filter>
     </Text>
     <Text Include="inventare.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="cladiri.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="pacienti.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="masini_arbore.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="muchii.txt">
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
