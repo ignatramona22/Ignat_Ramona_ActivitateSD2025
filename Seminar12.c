@@ -15,6 +15,23 @@ struct StructuraMasina {
 	unsigned char serie;
 };
 typedef struct StructuraMasina Masina;
+typedef struct NodListaPrincipala NodListaPrincipala;
+typedef struct NodListaSecundara NodListaSecundara;
+
+struct NodListaPrincipala {
+	 NodListaPrincipala* next;
+	 NodListaPrincipala* vecini;
+	Masina info;
+
+};
+
+
+struct NodListaSecundara {
+	NodListaPrincipala* info;
+	 NodListaSecundara* next;
+};
+
+
 
 Masina citireMasinaDinFisier(FILE* file) {
 	char buffer[100];
@@ -55,39 +72,111 @@ void afisareMasina(Masina masina) {
 //2.
 //functii de inserare in liste
 //si in principala si in secundara
+NodListaPrincipala* inserareListaPrincipala(NodListaPrincipala* cap, Masina info) {
+	NodListaPrincipala* nou = (NodListaPrincipala*)malloc (sizeof(NodListaPrincipala));
+	nou->info = info;
+	nou->vecini = NULL;
+	nou->next = NULL;
+	if (!cap) return nou;
+	NodListaPrincipala* p = cap;
+	while (p->next)p = p->next;
+	p->next = nou;
+	return cap;
+}
+
+NodListaSecundara* inserareListaSecundara(NodListaPrincipala* cap, NodListaPrincipala* info) {
+	NodListaSecundara* nou = (NodListaSecundara*)malloc(sizeof(NodListaSecundara));
+	nou->info = info;
+	nou->next = NULL;
+	cap->next = cap;
+	cap = nou;
+	return cap;
+}
 
 //3.
 //functie de cautarea in lista principala dupa ID
-void* cautaNodDupaID(void* listaPrincipala, int id) {
-
+NodListaPrincipala* cautaNodDupaID(NodListaPrincipala* listaPrincipala, int id) {
+	while (listaPrincipala && listaPrincipala->info.id !=id)
+	{
+		listaPrincipala = listaPrincipala->next;
+	}
+	return listaPrincipala;
 }
 
 //4.
 //inserare muchie
 void inserareMuchie(void* listaPrincipala, int idStart, int idStop) {
+	NodListaPrincipala* nodStart = cautaNodDupaID(listaPrincipala, idStart);
+	NodListaPrincipala* nodStop = cautaNodDupaID(listaPrincipala, idStop);
+	if (nodStart && nodStop) {
+		nodStart->vecini = inserareListaSecundara(nodStart->vecini, nodStop);
+		nodStop->vecini = inserareListaSecundara(nodStop->vecini, nodStart);
+	}
 
 }
 
 
-void* citireNoduriMasiniDinFisier(const char* numeFisier) {
-	//functia primeste numele fisierului, il deschide si citeste toate masinile din fisier
-	//prin apelul repetat al functiei citireMasinaDinFisier()
-	//ATENTIE - la final inchidem fisierul/stream-ul
+NodListaPrincipala* citireNoduriMasiniDinFisier(const char* numeFisier) {
+	NodListaPrincipala* listaPrincipala = NULL;
+	FILE* f = fopen(numeFisier, "r");
+	while (!(feof))
+	{
+		inserareListaPrincipala(listaPrincipala, citireMasinaDinFisier(f));
+	}
+	fclose(f);
+	return listaPrincipala;
 }
 
-void citireMuchiiDinFisier(const char* numeFisier) {
+void citireMuchiiDinFisier(NodListaPrincipala* listaPrincipala, const char* numeFisier) {
 	//functia primeste numele fisierului, il deschide si citeste 
 	//toate id-urile de start si stop pentru fiecare muchie
 	//ATENTIE - la final inchidem fisierul/stream-ul
+	FILE* f = fopen(numeFisier, "r");
+	while (!feof(f)) {
+		int idStart;
+		int idStop;
+		fscanf(f, "%d %d", &idStart, &idStop);
+		inserareMuchie(listaPrincipala, idStart, idStop);
+	}
+	fclose(f);
 }
 
-void dezalocareNoduriGraf(void* listaPrincipala) {
+void stergereListaSecundara(NodListaSecundara** cap) {
+	NodListaSecundara* aux = (*cap)->next;
+	while ((*cap))
+	{
+		aux = (*cap)->next;
+		free((*cap));
+		(*cap) = aux;
+	}
+
+}
+
+void dezalocareNoduriGraf(NodListaPrincipala** listaPrincipala) {
 	//sunt dezalocate toate masinile din graf 
 	//si toate nodurile celor doua liste
+	NodListaPrincipala* aux;
+	while ((*listaPrincipala))
+	{
+		aux = (*listaPrincipala)->next;
+		stergereListaSecundara((*listaPrincipala)->vecini);
+		if ((*listaPrincipala)->info.numeSofer) {
+			free((*listaPrincipala)->info.numeSofer);
+		}
+		if ((*listaPrincipala)->info.model) {
+			free((*listaPrincipala)->info.model);
+		}
+		free(*listaPrincipala);
+		(*listaPrincipala) = NULL;
+
+	}
+
 }
 
 int main() {
-
+	NodListaPrincipala* graf = citireNoduriMasiniDinFisier("masini.txt");
+	citireMuchiiDinFisier(graf, "muchii.txt");
+	dezalocareNoduriGraf(&graf);
 
 	return 0;
 }
