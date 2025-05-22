@@ -232,15 +232,29 @@ Nod* subarboreCuMaiMulteNoduri(Nod* radacina) {
 }
 
 
-float calculeazaPretTotal(/*arbore de masini*/) {
-	//calculeaza pretul tuturor masinilor din arbore.
-	return 0;
+float calculeazaPretTotal(Nod* radacina) {
+	if (radacina == NULL)
+		return 0;
+
+	return radacina->info.pret +
+		calculeazaPretTotal(radacina->st) +
+		calculeazaPretTotal(radacina->dr);
 }
 
-float calculeazaPretulMasinilorUnuiSofer(/*arbore de masini*/ const char* numeSofer) {
-	//calculeaza pretul tuturor masinilor unui sofer.
-	return 0;
+
+float calculeazaPretulMasinilorUnuiSofer(Nod* radacina, const char* numeSofer) {
+	if (radacina == NULL)
+		return 0;
+
+	float suma = 0;
+	if (strcmp(radacina->info.numeSofer, numeSofer) == 0) {
+		suma += radacina->info.pret;
+	}
+	suma += calculeazaPretulMasinilorUnuiSofer(radacina->st, numeSofer);
+	suma += calculeazaPretulMasinilorUnuiSofer(radacina->dr, numeSofer);
+	return suma;
 }
+
 
 int main() {
 	Nod* arbore = citireArboreDeMasiniDinFisier("masini.txt");
@@ -264,6 +278,13 @@ int main() {
 	Nod* subMaiMulte = subarboreCuMaiMulteNoduri(arbore);
 	printf("\nSubarbore cu mai multe noduri:\n");
 	afisareArboreInOrdine(subMaiMulte);
+
+	float pretTotal = calculeazaPretTotal(arbore);
+	printf("\nPret total masini: %.2f\n", pretTotal);
+
+	float pretSofer = calculeazaPretulMasinilorUnuiSofer(arbore, "Gigel");
+	printf("Pret masini detinute de Gigel: %.2f\n", pretSofer);
+
 
 
 	dezalocareArboreDeMasini(&arbore);
