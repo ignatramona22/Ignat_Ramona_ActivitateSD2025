@@ -159,6 +159,50 @@ int determinaNumarNoduri(Nod* radacina) {
 	return 0;
 }
 
+
+
+Nod* gasesteMinim(Nod* radacina) {
+	while (radacina && radacina->st)
+		radacina = radacina->st;
+	return radacina;
+}
+
+Nod* stergeNod(Nod* radacina, int id) {
+	if (radacina == NULL) return NULL;
+
+	if (id < radacina->info.id) {
+		radacina->st = stergeNod(radacina->st, id);
+	}
+
+	else if (id > radacina->info.id) {
+		radacina->dr = stergeNod(radacina->dr, id);
+	}
+
+	else {
+		// caz cu 0 sau 1 copil
+		if (radacina->st == NULL) {
+			Nod* temp = radacina->dr;
+			free(radacina->info.model);
+			free(radacina->info.numeSofer);
+			free(radacina);
+			return temp;
+		}
+		else if (radacina->dr == NULL) {
+			Nod* temp = radacina->st;
+			free(radacina->info.model);
+			free(radacina->info.numeSofer);
+			free(radacina);
+			return temp;
+		}
+
+		// caz cu 2 copii
+		Nod* minimDr = gasesteMinim(radacina->dr);
+		radacina->info = minimDr->info;
+		radacina->dr = stergeNod(radacina->dr, minimDr->info.id);
+	}
+	return radacina;
+}
+
 int calculeazaInaltimeArbore(/*arbore de masini*/) {
 	//calculeaza inaltimea arborelui care este data de 
 	//lungimea maxima de la radacina pana la cel mai indepartat nod frunza
@@ -185,6 +229,10 @@ int main() {
 	printf("\n\n-------------------\n");
 	int i = determinaNumarNoduri(arbore);
 	printf("Nr noduri: %d", i);
+
+	printf("\nSterge nod cu ID 2\n");
+	arbore = stergeNod(arbore, 2);
+	afisareArboreInOrdine(arbore);
 
 	dezalocareArboreDeMasini(&arbore);
 	return 0;
