@@ -203,10 +203,22 @@ Nod* stergeNod(Nod* radacina, int id) {
 	return radacina;
 }
 
-int calculeazaInaltimeArbore(/*arbore de masini*/) {
-	//calculeaza inaltimea arborelui care este data de 
-	//lungimea maxima de la radacina pana la cel mai indepartat nod frunza
-	return 0;
+
+
+int calculeazaInaltimeArbore(Nod* radacina) {
+	if(!radacina) return 0;
+	int hSt = calculeazaInaltimeArbore(radacina->st);
+	int hDr = calculeazaInaltimeArbore(radacina->dr);
+	return 1 + (hSt > hDr ? hSt : hDr);
+
+}
+
+Nod* subarboreCuInaltimeaMaiMare(Nod* radacina) {
+	if (!radacina)
+		return NULL;
+	int hSt = calculeazaInaltimeArbore(radacina->st);
+	int hDr = calculeazaInaltimeArbore(radacina->dr);
+	return hSt >= hDr ? radacina->st : radacina->dr;
 }
 
 float calculeazaPretTotal(/*arbore de masini*/) {
@@ -233,6 +245,11 @@ int main() {
 	printf("\nSterge nod cu ID 2\n");
 	arbore = stergeNod(arbore, 2);
 	afisareArboreInOrdine(arbore);
+
+	printf("\nSubarbore cu inaltimea mai mare\n");
+	Nod* subInalt = subarboreCuInaltimeaMaiMare(arbore);
+	afisareArboreInOrdine(subInalt);
+
 
 	dezalocareArboreDeMasini(&arbore);
 	return 0;
