@@ -221,6 +221,17 @@ Nod* subarboreCuInaltimeaMaiMare(Nod* radacina) {
 	return hSt >= hDr ? radacina->st : radacina->dr;
 }
 
+
+
+Nod* subarboreCuMaiMulteNoduri(Nod* radacina) {
+	if (!radacina)
+		return NULL;
+	int nrSt = determinaNumarNoduri(radacina->st);
+	int nrDr = determinaNumarNoduri(radacina->dr);
+	return nrSt >= nrDr ? radacina->st : radacina->dr;
+}
+
+
 float calculeazaPretTotal(/*arbore de masini*/) {
 	//calculeaza pretul tuturor masinilor din arbore.
 	return 0;
@@ -249,6 +260,10 @@ int main() {
 	printf("\nSubarbore cu inaltimea mai mare\n");
 	Nod* subInalt = subarboreCuInaltimeaMaiMare(arbore);
 	afisareArboreInOrdine(subInalt);
+
+	Nod* subMaiMulte = subarboreCuMaiMulteNoduri(arbore);
+	printf("\nSubarbore cu mai multe noduri:\n");
+	afisareArboreInOrdine(subMaiMulte);
 
 
 	dezalocareArboreDeMasini(&arbore);
