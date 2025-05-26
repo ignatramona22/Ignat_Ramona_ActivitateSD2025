@@ -1,0 +1,10 @@
+214,Sensiblu,230000.50,Elena Marinescu,15,Cluj-Napoca
+189,HelpNet,175400.00,George Ionescu,10,Iasi
+305,Dr.Max,198700.25,Maria Radu,13,Timisoara
+142,Centrofarm,92000.30,Cristina Dobre,8,Brasov
+278,BellaFarm,110000.10,Sorin Gheorghiu,9,Constanta
+121,RetetaVerde,85000.00,Ana Stan,6,Ploiesti
+399,PharmaPlus,132500.75,Valentin Neagu,11,Sibiu
+167,VitaCare,145600.40,Lavinia Dumitru,7,Oradea
+256,SanatateExpress,101300.00,Roxana Pavel,5,Craiova
+133,Farmeco,118900.80,Ilie Enache,14,Brasov
